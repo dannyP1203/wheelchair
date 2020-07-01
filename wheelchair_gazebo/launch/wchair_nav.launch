@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<launch>
+	<!-- Run node UKF to estimate the position       -->
+	<node pkg="wheelchair_localization" type="ukf_sim" name="ukf_sim"></node>
+	
+	<!-- Run the map server -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find wheelchair_navigation)/maps/laboratorio/laboratorio.yaml">
+		<param name="frame_id" value="map"/>
+	</node>
+
+  	<!--- Run AMCL -->
+	<include file="$(find amcl)/examples/amcl_diff.launch"/>
+
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find wheelchair_navigation)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    	<rosparam file="$(find wheelchair_navigation)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    	<rosparam file="$(find wheelchair_navigation)/params/local_costmap_params.yaml" command="load" />
+   	<rosparam file="$(find wheelchair_navigation)/params/global_costmap_params.yaml" command="load" />
+    	<rosparam file="$(find wheelchair_navigation)/params/base_local_planner_params.yaml" command="load" />
+	</node>
+
+</launch>

@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<robot name="wchair" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- PROPERTY LIST -->
+	<property name="M_PI" value="3.1415926535897931" />
+	<property name="base_x" value="0.75" />
+	<property name="base_y" value="0.5" />
+	<property name="base_z" value="0.30" />
+	<property name="base_mass" value="5.0"/>
+	
+	<property name="hokuyo_size" value="0.05"/>
+	<property name="imu_size" value="0.05"/>
+  	<property name="camera_size" value="1" />
+
+	
+	<property name="rate_sensor" value="50.0"/>
+	<property name="d_grey" value="0.15"/>
+<!-- ##################################################################### -->
+	<!-- SENSOR camera -->	
+  <link name="camera_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="${camera_size} ${camera_size} ${camera_size}"/></geometry>
+	  <material name="red"><color rgba="1 0 0 1"/></material>
+    </visual>
+	<collision>
+		<origin xyz="0 0 0" rpy="0 0 0" />
+		<geometry><box size="${camera_size} ${camera_size} ${camera_size}"/></geometry>
+	</collision>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <gazebo reference="camera_link">
+	<material>Gazebo/Red</material>
+    <sensor type="camera" name="camera_sensor">
+      <update_rate>${rate_sensor}</update_rate>
+      <camera>
+        <horizontal_fov>1.047197551</horizontal_fov> <!--48 gradi-->
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.002</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.0</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+		<updateRate>20.0</updateRate>
+		<cameraName>wchair/camera_sensor</cameraName>	
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.0</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+        <Cx>319.729675</Cx>
+        <Cy>238.722791</Cy>
+        <focalLength>554.668244</focalLength>
+      </plugin>
+    </sensor>
+  </gazebo>
+</robot>
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+ <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    
+  <model name='Calibration'>
+    <pose frame=''>0 0 1.4 0 0 0</pose>
+    
+    <include>
+      <uri>model://qr_code_calibration</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    
+    <static>1</static>
+  </model>
+ </world>
+</sdf>

@@ -1,0 +1,6 @@
+1. Scrivere <arg name="world_name" value="$(find model_ag)/worlds/calibration.world"/> nel file wchair_gaz.launch
+2. Lanciamo il comando "rosrun camera_calibration cameracalibrator.py --size 7x5 --square 0.3386666667 image:=/wchair/camera_sensor/image_raw camera:=/wchair/camera_sensor --no-service-check" 
+3. Seguire le istruzioni su wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration
+
+N.B. per calibrare la cam in gazebo usiamo un'immagine di 768*1024 pixel (convertiti in cm nel campo size del model.sdf) con 8x6 quadrati di lato 0.3386666667 metri
+
