@@ -153,7 +153,7 @@ int main(int argc, char **argv){
 	gazebo::transport::SubscriberPtr imu_sub = node->Subscribe("~/wchair/base_link/imu_sensor/imu", imuCallback); 
 	
 	ros::ServiceClient client;
-	string modelName = "wchair";
+	string modelName = "Wheelchair";
 	gazebo_msgs::GetModelState getModelState;
   	geometry_msgs::Point pp;
   	geometry_msgs::Quaternion qq;
@@ -172,7 +172,7 @@ int main(int argc, char **argv){
 	X_E=Xa0; Y_E=Ya0; X_I=Xa0; Y_I=Ya0;
 	cout<<Xa0<<"\t"<<Ya0<<"\t"<<theta0<<"\t"<<endl;
 	
-	odomUKFfile.open("~/catkin_ws/src/wchair_sim/test_ag/file/UKFodom.txt", ios::out);
+	odomUKFfile.open("~/wheelchair_ws/src/wchair_sim/wheelchair_localization/file/UKFodom.txt", ios::out);
 	//if(odomUKFfile.is_open()){
 	
 		while (ros::ok()){

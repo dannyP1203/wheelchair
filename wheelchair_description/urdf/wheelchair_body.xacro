@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	
+	<!-- Base Link -->
+	<link name="base_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="${base_x} ${base_y} ${base_z}"/></geometry>
+			<material name="blue"><color rgba="0 0 0.6 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="${base_x} ${base_y} ${base_z}"/></geometry>
+		</collision>
+		<inertial>
+			<mass value="${base_mass}"/>
+			<inertia ixx="0.13" ixy="0.0" ixz="0.0" iyx="0.0" iyy="0.21" iyz="0.0" izx="0.0" izy="0.0" izz="0.13"/>
+		</inertial>
+	</link>
+	
+	<!-- PEDANA 1 -->
+	<link name="pedana1">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.02 0.5 0.35" /></geometry>
+			<material name="dark_grey"><color rgba="${d_grey} ${d_grey} ${d_grey} 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.02 0.5 0.35" /></geometry>
+		</collision>
+	</link>
+	<joint name="joint_pedana1" type="fixed">
+		<parent link="base_link"/>
+		<child link="pedana1"/>
+		<origin xyz="0.42 0 0.05" rpy="0 -0.40 0" />
+	</joint>
+	
+	<!-- PEDANA 2 -->
+	<link name="pedana2">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.25 0.5 0.02" /></geometry>
+			<material name="dark_grey"><color rgba="${d_grey} ${d_grey} ${d_grey} 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.25 0.5 0.02"  /></geometry>
+		</collision>
+	</link>
+	<joint name="joint_pedana2" type="fixed">
+		<parent link="base_link"/>
+		<child link="pedana2"/>
+		<origin xyz="0.60 0 -0.12" rpy="0 0 0" />
+	</joint>
+	
+	<!-- SEDILE -->
+	<link name="sedile">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.35 0.5 0.08" /></geometry>
+			<material name="dark_grey"><color rgba="${d_grey} ${d_grey} ${d_grey} 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.35 0.5 0.08" /></geometry>
+		</collision>
+	</link>
+	<joint name="joint_sedile" type="fixed">
+		<parent link="base_link"/>
+		<child link="sedile"/>
+		<origin xyz="0.19 0 0.19" rpy="0 0 0" />
+	</joint>
+	
+	<!-- SCHIENALE -->
+	<link name="schienale">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.06 0.5 0.48" /></geometry>
+			<material name="dark_grey"><color rgba="${d_grey} ${d_grey} ${d_grey} 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.06 0.5 0.48" /></geometry>
+		</collision>
+	</link>
+	<joint name="joint_schienale" type="fixed">
+		<parent link="base_link"/>
+		<child link="schienale"/>
+		<origin xyz="0 0 0.45" rpy="0 -0.2 0" />
+	</joint>
+	
+	<!-- BRACCIOLO DX-->
+	<link name="bracciolo_dx">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.40 0.06 0.04" /></geometry>
+			<material name="dark_grey"><color rgba="${d_grey} ${d_grey} ${d_grey} 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.40 0.06 0.04" /></geometry>
+		</collision>
+	</link>
+	<joint name="joint_bracciolo_dx" type="fixed">
+		<parent link="base_link"/>
+		<child link="bracciolo_dx"/>
+		<origin xyz="0.16 -0.28 0.4" rpy="0 0 0" />
+	</joint>
+	
+	<!-- BRACCIOLO SX-->
+	<link name="bracciolo_sx">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.40 0.06 0.04" /></geometry>
+			<material name="dark_grey"><color rgba="${d_grey} ${d_grey} ${d_grey} 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.40 0.06 0.04" /></geometry>
+		</collision>
+	</link>
+	<joint name="joint_bracciolo_sx" type="fixed">
+		<parent link="base_link"/>
+		<child link="bracciolo_sx"/>
+		<origin xyz="0.16 0.28 0.4" rpy="0 0 0" />
+	</joint>
+	
+   <!-- SUPPORTO -->
+	<link name="supporto1">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="${camera_size} ${camera_size} 0.625" /></geometry>
+			<material name="blue"><color rgba="0 0 0.6 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="${camera_size} ${camera_size} 0.625" /></geometry>
+		</collision>
+	</link>
+	<joint name="joint_supporto1" type="fixed">
+		<parent link="base_link"/>
+		<child link="supporto1"/>
+		<origin xyz="-0.15 0 0.3125" rpy="0 0 0" />
+	</joint>
+	
+	<link name="supporto2">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.15 0.5 ${camera_size}" /></geometry>
+			<material name="blue"><color rgba="0 0 0.6 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="0.15 0.5 ${camera_size}" /></geometry>
+		</collision>
+	</link>
+	<joint name="joint_supporto2" type="fixed">
+		<parent link="base_link"/>
+		<child link="supporto2"/>
+		<origin xyz="-0.15 0 ${0.6+camera_size}" rpy="0 0 0" />
+	</joint>
+</robot>
+

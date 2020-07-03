@@ -1,7 +1,8 @@
 <?xml version='1.0'?>
 <launch>
-	<!-- Run node UKF to estimate the position       -->
-	<node pkg="wheelchair_localization" type="ukf_sim" name="ukf_sim"></node>
+	<!-- Run node UKF to estimate the position -->
+	<!-- NB: Se si usa ukf per odom, va disabilitata l'odometria sul plugin diff drive, altrimenti verrebbe pubblicata da entrambi 
+	<node pkg="wheelchair_localization" type="ukf_sim" name="ukf_sim"></node> -->
 	
 	<!-- Run the map server -->
 	<node name="map_server" pkg="map_server" type="map_server" args="$(find wheelchair_navigation)/maps/laboratorio/laboratorio.yaml">

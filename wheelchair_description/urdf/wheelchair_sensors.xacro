@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- Hokuyo -->
+	<link name="hokuyo_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="${hokuyo_size} ${hokuyo_size} ${hokuyo_size}"/></geometry>
+			<material name="black"><color rgba="0 0 0 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="${hokuyo_size} ${hokuyo_size} ${hokuyo_size}"/></geometry>
+		</collision>
+	</link> 
+	<joint name="hokuyo_joint" type="fixed">
+		<origin xyz="0.7 0 -0.085" rpy="0 0 0" />
+		<parent link="base_link"/>
+		<child link="hokuyo_link" />
+	</joint>
+	
+	<!-- Imu -->	
+	<link name="imu_link">
+  		<visual>
+    		<origin rpy="0 0 0" xyz="0 0 0"/>
+      		<geometry><box size="${imu_size} ${imu_size} ${imu_size}"/></geometry>
+			<material name="orange"><color rgba="1 0.5 0 1"/></material>
+  		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="${imu_size} ${imu_size} ${imu_size}"/></geometry>
+		</collision>
+	</link>
+	<joint name="imu_joint" type="fixed">
+    	<origin xyz="${-base_x/2 + imu_size} 0 ${base_z/2+imu_size/2}" rpy="0 0 0"/>
+    	<parent link="base_link"/>
+    	<child link="imu_link"/>
+  	</joint>
+
+	<!-- Camera -->	
+	<link name="camera_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry><box size="${camera_size} ${camera_size} ${camera_size}"/></geometry>
+			<material name="red"><color rgba="1 0 0 1"/></material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry><box size="${camera_size} ${camera_size} ${camera_size}"/></geometry>
+		</collision>
+		<inertial>
+			<mass value="1e-5" />
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+		</inertial>
+	</link>
+	<joint name="camera_joint" type="fixed">
+		<axis xyz="0 1 0" />
+		<origin xyz="-0.15 0 ${0.6+camera_size*2}" rpy="0 -1.5708 0" /> <!-- pitch a -1.5708 per puntare in alto -->
+		<parent link="base_link"/>
+		<child link="camera_link"/>
+	</joint>
+</robot>
+

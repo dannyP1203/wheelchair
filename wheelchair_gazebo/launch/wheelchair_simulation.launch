@@ -11,8 +11,9 @@
 		<arg name="use_sim_time" value="true"/>
 	</include>
 	
-	<!-- Run the joint state publisher (finchè non lo aggiungo come controllore o se ne fa uno proprio) 
-	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node>-->
+	<!-- Run the joint state publisher (finchè non lo aggiungo come controllore o se ne fa uno proprio). 
+	Ora i joint states sono pubblicati da diff drive. 
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node> -->
 
 	<!-- Run the robot state publisher -->
 	<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
@@ -22,8 +23,16 @@
 	<!-- Spawn the URDF in gazebo -->
 	<node name="spawner_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model Wheelchair -param robot_description"/>
 	
-	<!-- Run RViz 
-	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find wheelchair_description)/config/wchair.rviz"/> -->
+	<!-- Include the navigation launcher -->
+	<include file="$(find wheelchair_gazebo)/launch/wchair_nav.launch" />
 	
+	<!-- Include the visp launcher -->
+	<include file="$(find wheelchair_gazebo)/launch/wchair_visp.launch" />
+	
+	<!-- Run RViz -->
+	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find wheelchair_description)/config/wchair.rviz"/> 
+	
+	<!-- Run teleop node -->
+	<include file="$(find wheelchair_control)/launch/keyboard_teleop.launch"/>
 	
 </launch>

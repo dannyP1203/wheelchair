@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<robot name="Wheelchair" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:include filename="wheelchair_property.xacro"/>
+	<xacro:include filename="wheelchair_body.xacro"/>
+	<xacro:include filename="wheelchair_sensors.xacro"/>
+	<xacro:include filename="wheelchair_wheels.xacro"/>
+	<xacro:include filename="wheelchair_gazebo.xacro"/>
+	<xacro:include filename="wheelchair_transmission.xacro"/>
+</robot>

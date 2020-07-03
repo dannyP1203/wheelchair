@@ -9,7 +9,11 @@
 	<license>TODO</license>
 
 	<buildtool_depend>catkin</buildtool_depend>
-	<export>
+	
+	<run_depend>gazebo_ros</run_depend>
+	<build_depend>gazebo_ros</build_depend>
 
+	<export>
+		<gazebo_ros gazebo_model_path="${prefix}/worlds" />
 	</export>
 </package>

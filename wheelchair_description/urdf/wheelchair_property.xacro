@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	
+	<!-- PROPERTY LIST -->
+	
+	<!-- Base -->
+	<xacro:property name="base_x" value="0.75" />
+	<xacro:property name="base_y" value="0.5" />
+	<xacro:property name="base_z" value="0.30" />
+	<xacro:property name="base_mass" value="5.0"/>
+	
+	<!-- Wheels -->
+	<xacro:property name="wheel_radius" value="0.2" /> 
+	<xacro:property name="wheel_height" value="0.1" />
+	<xacro:property name="wheel_mass" value="1" /> <!-- in kg-->
+	
+	<!-- Caster -->
+	<xacro:property name="caster_radius" value="0.1" /> 
+	<xacro:property name="caster_mass" value="0.5" /> <!-- in kg-->
+	
+	<!-- Top -->
+	<xacro:property name="top_radius" value="0.025" /> 
+	<xacro:property name="top_height" value="0.2" />
+	<xacro:property name="top_mass" value="1" /> <!-- in kg-->
+	
+	<!-- Material -->
+	<xacro:property name="d_grey" value="0.15"/>
+	
+	<!-- Camera -->
+	<xacro:property name="camera_size" value="0.05" />	
+	
+	<!-- Hokuyo -->
+	<xacro:property name="hokuyo_size" value="0.05"/>
+	
+	<!-- Imu -->
+	<xacro:property name="imu_size" value="0.05"/>
+	
+	
+	<!-- Other -->
+	<xacro:property name="M_PI" value="3.14159265359" />
+	<xacro:property name="rate_sensor" value="50.0"/>
+	
+</robot>
+
