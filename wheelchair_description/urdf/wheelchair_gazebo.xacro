@@ -50,30 +50,65 @@
   	</gazebo>
 	
 	<!-- Ruote -->
-	<gazebo reference="$left_wheel">
+	<gazebo reference="left_wheel">
 		<material>Gazebo/Grey</material>
+		<kp>1000000.0</kp>
+		<kd>10.0</kd>
+		<mu1>1.5</mu1>
+		<mu2>1.5</mu2>
+		<fdir1>1 0 0</fdir1>
+		<maxVel>1.0</maxVel>
+		<minDepth>0.00</minDepth>
 	</gazebo>
 	
-	<gazebo reference="$right_wheel">
-		<material>Gazebo/Grey</material>
+	<gazebo reference="right_wheel">
+		<material>Gazebo/Grey</material>	
+		<kp>1000000.0</kp>
+		<kd>1.0</kd>
+		<mu1>1</mu1>
+		<mu2>1</mu2>
+		<fdir1>1 0 0</fdir1>
+		<maxVel>1.0</maxVel>
+		<minDepth>0.00</minDepth>	
 	</gazebo>
 	
 	<!-- Caster -->
-	<gazebo reference="left_caster">
+	<gazebo reference="left_castor_wheel_link">
 		<material>Gazebo/Grey</material>
+		<kp>1000000.0</kp>
+		<kd>1.0</kd>
+		<mu1>0.25</mu1>
+		<mu2>0.25</mu2>
+		<fdir1>1 0 0</fdir1>
+		<maxVel>1.0</maxVel>
+		<minDepth>0.00</minDepth>	
 	</gazebo>
 	
-	<gazebo reference="right_caster">
-		<material>Gazebo/Grey</material>
+	<gazebo reference="right_castor_wheel_link">
+		<material>Gazebo/Grey</material>	
+		<kp>1000000.0</kp>
+		<kd>1.0</kd>
+		<mu1>0.25</mu1>
+		<mu2>0.25</mu2>
+		<fdir1>1 0 0</fdir1>
+		<maxVel>1.0</maxVel>
+		<minDepth>0.00</minDepth>	
 	</gazebo>
 	
-	<!-- Top -->
-	<gazebo reference="left_top">
-		<material>Gazebo/White</material>
+	<gazebo reference="left_castor_mount_link">
+		<material>Gazebo/DarkGrey</material>
 	</gazebo>
 	
-	<gazebo reference="right_top">
-		<material>Gazebo/White</material>
+	<gazebo reference="right_castor_mount_link">
+		<material>Gazebo/DarkGrey</material>
+	</gazebo>
+	
+	<gazebo reference="left_castor_dummy_link">
+		<material>Gazebo/DarkGrey</material>
+	</gazebo>
+	
+	<gazebo reference="right_castor_dummy_link">
+		<material>Gazebo/DarkGrey</material>
 	</gazebo>
 	
 	
@@ -237,36 +272,14 @@
 <!-- ##################################################################### -->
 	
 	<!-- DIFFERENTIAL DRIVE CONTROLLER -->
-	
 	<gazebo>
-		<plugin name="differential_drive_controller_caster" filename="libgazebo_ros_diff_drive.so">
-			<legacyMode>false</legacyMode>
-			<rosDebugLevel>Debug</rosDebugLevel>
-			<publishWheelTF>true</publishWheelTF>
-			<robotNamespace>/</robotNamespace>
-			<publishTf>0</publishTf> 
-			<broadcastTF>0</broadcastTF>
-			<alwaysOn>true</alwaysOn>
-			<publishWheelJointState>false</publishWheelJointState>
-			<updateRate>${rate_sensor}</updateRate>
-			<leftJoint>left_caster_joint</leftJoint>
-			<rightJoint>right_caster_joint</rightJoint>
-			<wheelSeparation>${base_y}</wheelSeparation>
-			<wheelDiameter>0.2</wheelDiameter>
-			<wheelTorque>30</wheelTorque>
-			<wheelAcceleration>1.8</wheelAcceleration>
-			<commandTopic>cmd_vel</commandTopic>
-			<robotBaseFrame>base_link</robotBaseFrame>
-			<odometryFrame>odom</odometryFrame> 
-			<odometryTopic>odom</odometryTopic>
-		</plugin>
 		<plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
 			<alwaysOn>true</alwaysOn>
 			<legacyMode>false</legacyMode>
 			<rosDebugLevel>na</rosDebugLevel>
 			<robotNamespace>/</robotNamespace>
 			<publishWheelTF>false</publishWheelTF>
-			<publishWheelJointState>true</publishWheelJointState>
+			<publishWheelJointState>false</publishWheelJointState>
 			<publishTf>1</publishTf> 	
 			<updateRate>${rate_sensor}</updateRate>
 			<leftJoint>left_wheel_joint</leftJoint>
@@ -276,32 +289,22 @@
 			<wheelTorque>30</wheelTorque>
 			<wheelAcceleration>1.8</wheelAcceleration>
 			<commandTopic>cmd_vel</commandTopic>
-			<robotBaseFrame>base_link</robotBaseFrame>
+			<robotBaseFrame>base_footprint</robotBaseFrame>
 			<odometryFrame>odom</odometryFrame> 
 			<odometryTopic>odom</odometryTopic>
 			<odometrySource>world</odometrySource>
-		</plugin>
-		<plugin name="differential_drive_controller_top" filename="libgazebo_ros_diff_drive.so">
-			<legacyMode>false</legacyMode>
-			<rosDebugLevel>Debug</rosDebugLevel>
-			<publishWheelTF>true</publishWheelTF>
-			<robotNamespace>/</robotNamespace>
-			<publishTf>0</publishTf> 
-			<broadcastTF>0</broadcastTF>
-			<alwaysOn>true</alwaysOn>
-			<publishWheelJointState>false</publishWheelJointState>
-			<updateRate>${rate_sensor}</updateRate>
-			<leftJoint>left_top_joint</leftJoint>
-			<rightJoint>right_top_joint</rightJoint>
-			<wheelSeparation>${base_y}</wheelSeparation>
-			<wheelDiameter>0.05</wheelDiameter>
-			<wheelTorque>30</wheelTorque>
-			<wheelAcceleration>1.8</wheelAcceleration>
-			<commandTopic>cmd_vel</commandTopic>
-			<robotBaseFrame>base_link</robotBaseFrame>
-			<odometryFrame>odom</odometryFrame> 
-			<odometryTopic>odom</odometryTopic>
+			<publishOdom>true</publishOdom>
 		</plugin>
 	</gazebo>
+
+
+	<!-- ROS CONTROL -->
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+		<legacyModeNS>false</legacyModeNS>
+		<robotNamespace>/</robotNamespace>
+		</plugin>
+	</gazebo>
+
 </robot>
 

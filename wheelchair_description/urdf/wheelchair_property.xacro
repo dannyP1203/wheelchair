@@ -7,22 +7,31 @@
 	<!-- Base -->
 	<xacro:property name="base_x" value="0.75" />
 	<xacro:property name="base_y" value="0.5" />
-	<xacro:property name="base_z" value="0.30" />
-	<xacro:property name="base_mass" value="5.0"/>
+	<xacro:property name="base_z" value="0.15" />
+	<xacro:property name="base_mass" value="100.0"/>
+	<xacro:property name="inertia_correcting_factor" value="20"/> <!-- aumenta l'inertia della base per ridurre il bug dello scivolamento, 1: no correction -->
 	
 	<!-- Wheels -->
 	<xacro:property name="wheel_radius" value="0.2" /> 
 	<xacro:property name="wheel_height" value="0.1" />
-	<xacro:property name="wheel_mass" value="1" /> <!-- in kg-->
+	<xacro:property name="wheel_mass" value="5" /> 
 	
 	<!-- Caster -->
-	<xacro:property name="caster_radius" value="0.1" /> 
-	<xacro:property name="caster_mass" value="0.5" /> <!-- in kg-->
+	<xacro:property name="castor_mount_link_length" value="0.1" />
+	<xacro:property name="castor_mount_link_width" value="0.1" />
+	<xacro:property name="castor_mount_link_height" value="0.01" />
+	<xacro:property name="castor_mount_link_mass" value="0.25"/>
 	
-	<!-- Top -->
-	<xacro:property name="top_radius" value="0.025" /> 
-	<xacro:property name="top_height" value="0.2" />
-	<xacro:property name="top_mass" value="1" /> <!-- in kg-->
+	<xacro:property name="castor_dummy_link_length" value="0.02" />
+	<xacro:property name="castor_dummy_link_width" value="0.02" />
+	<xacro:property name="castor_dummy_link_height" value="0.02" />
+	<xacro:property name="castor_dummy_link_mass" value="0.25"/> 
+	
+	<xacro:property name="castor_wheel_length" value="0.1" />
+	<xacro:property name="castor_wheel_radius" value="0.095" />
+	<xacro:property name="castor_wheel_mass" value="2.5"/> 
+	
+	<xacro:property name="joint_friction" value="0.15" />
 	
 	<!-- Material -->
 	<xacro:property name="d_grey" value="0.15"/>
@@ -38,7 +47,7 @@
 	
 	
 	<!-- Other -->
-	<xacro:property name="M_PI" value="3.14159265359" />
+	<xacro:property name="pi" value="3.14159265359" />
 	<xacro:property name="rate_sensor" value="50.0"/>
 	
 </robot>

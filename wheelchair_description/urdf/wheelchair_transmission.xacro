@@ -4,50 +4,21 @@
 	
 	<!-- Wheels-->
 	
-	<xacro:macro name="wheel_transmission" params="lr"> <!-- lr: left, right -->
-		<transmission name="${lr}_wheel_joint_trans">
+	<xacro:macro name="wheel_transmission" params="side"> 
+		<transmission name="${side}_wheel_joint_trans">
 			<type>transmission_interface/SimpleTransmission</type>
-			<joint name="${lr}_wheel_joint"/>
-			<actuator name="${lr}_wheel_joint_motor">
+			<joint name="${side}_wheel_joint">
+				<hardwareInterface>EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="${side}_wheel_joint_motor">
 				<hardwareInterface>EffortJointInterface</hardwareInterface>
 				<mechanicalReduction>1</mechanicalReduction>
 			</actuator>
 		</transmission>
     </xacro:macro>
 	
-	<xacro:wheel_transmission lr="left" />
-	<xacro:wheel_transmission lr="right" />
-	
-	<!-- Caster (non ci dovrebbe essere!!!) -->
-	<xacro:macro name="caster_transmission" params="lr"> <!-- lr: left, right -->
-		<transmission name="${lr}_caster_joint_trans">
-			<type>transmission_interface/SimpleTransmission</type>
-			<joint name="${lr}_caster_joint"/>
-			<actuator name="${lr}_caster_joint_motor">
-				<hardwareInterface>EffortJointInterface</hardwareInterface>
-				<mechanicalReduction>1</mechanicalReduction>
-			</actuator>
-		</transmission>
-    </xacro:macro>
-	
-	<xacro:caster_transmission lr="left" />
-	<xacro:caster_transmission lr="right" />
-	
-	<!-- Top (non ci dovrebbe essere!!!) -->
-	<xacro:macro name="top_transmission" params="lr"> <!-- lr: left, right -->
-		<transmission name="${lr}_top_joint_trans">
-			<type>transmission_interface/SimpleTransmission</type>
-			<joint name="${lr}_top_joint"/>
-			<actuator name="${lr}_top_joint_motor">
-				<hardwareInterface>EffortJointInterface</hardwareInterface>
-				<mechanicalReduction>1</mechanicalReduction>
-			</actuator>
-		</transmission>
-    </xacro:macro>
-	
-	<xacro:top_transmission lr="left" />
-	<xacro:top_transmission lr="right" />
-	
+	<xacro:wheel_transmission side="left" />
+	<xacro:wheel_transmission side="right" />
 	
 </robot>
 
