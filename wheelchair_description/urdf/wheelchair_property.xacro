@@ -2,6 +2,21 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 	
+	<!-- ARG FROM LAUNCH FILE -->
+	
+	
+	<!-- <xacro:arg name="localization" default="" /> <~~! True: odom from custom algorithm. False: odom from gazebo diff drive.~~>
+	
+	<xacro:if value="$(arg localization)">
+		<xacro:property name="with_odom" value="false" /> <~~! Odom from custom algorithm. ~~>
+	</xacro:if>
+	<xacro:unless value="$(arg localization)">
+		<xacro:property name="with_odom" value="true" /> <~~! Odom from gazebo diff drive. ~~>
+	</xacro:unless>
+	 -->
+	
+	
+	
 	<!-- PROPERTY LIST -->
 	
 	<!-- Base -->
@@ -38,17 +53,22 @@
 	
 	<!-- Camera -->
 	<xacro:property name="camera_size" value="0.05" />	
+	<xacro:property name="camera_rate" value="50.0"/>
 	
 	<!-- Hokuyo -->
 	<xacro:property name="hokuyo_size" value="0.05"/>
+	<xacro:property name="hokuyo_rate" value="50.0"/>
 	
 	<!-- Imu -->
 	<xacro:property name="imu_size" value="0.05"/>
+	<xacro:property name="imu_rate" value="100"/>
+	
+	<!-- Encoder -->
+	<xacro:property name="encoder_rate" value="50.0"/>
 	
 	
 	<!-- Other -->
-	<xacro:property name="pi" value="3.14159265359" />
-	<xacro:property name="rate_sensor" value="50.0"/>
+	<xacro:property name="PI" value="3.14159265359" />
 	
 </robot>
 

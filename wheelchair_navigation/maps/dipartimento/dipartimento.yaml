@@ -1,4 +1,4 @@
-image: /home/giovanni/catkin_ws/src/wchair_sim/map_ag/dipartimento/dipartimento.pgm
+image: dipartimento.pgm
 resolution: 0.050000
 origin: [-10.000000, -21.200000, 0.000000]
 negate: 0

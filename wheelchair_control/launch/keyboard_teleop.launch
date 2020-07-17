@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- differential_teleop_key already has its own built in velocity smoother -->
-  <node pkg="wheelchair_control" type="diff_wheeled_robot_key.py" name="diff_wheeled_robot_key"  output="screen" launch-prefix="gnome-terminal -e">
-    <param name="scale_linear" value="1.5" type="double"/>
-    <param name="scale_angular" value="1.5" type="double"/>
-  </node>
+
+	<arg name="command_topic" default="cmd_vel" /> 
+
+	<node pkg="wheelchair_control" type="diff_wheeled_robot_key.py" name="teleop_node" output="screen" launch-prefix="xterm -e">
+		<param name="scale_linear" value="1.5" type="double"/>
+		<param name="scale_angular" value="1.5" type="double"/>
+		<remap from="cmd_vel" to="$(arg command_topic)" />
+	</node>
 </launch>

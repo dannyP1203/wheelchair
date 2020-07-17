@@ -14,6 +14,6 @@
 	<build_depend>gazebo_ros</build_depend>
 
 	<export>
-		<gazebo_ros gazebo_model_path="${prefix}/worlds" />
+		<gazebo_ros gazebo_model_path="${prefix}/worlds/models" />
 	</export>
 </package>

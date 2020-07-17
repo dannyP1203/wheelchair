@@ -1,42 +1,36 @@
 <?xml version='1.0'?>
 <launch>
-	
-	<!-- Load the URDF Model -->
-	<include file="$(find wheelchair_description)/launch/wheelchair_upload.launch" /> 
-	
-	<!-- Load ros_control controller configurations -->
-	<rosparam file="$(find wheelchair_control)/config/joint_state_controller.yaml" command="load" />
 
-	<!-- We resume the logic in empty_world.launch -->
-	<include file="$(find gazebo_ros)/launch/empty_world.launch">
-		<arg name="world_name" value="$(find wheelchair_gazebo)/worlds/empty_world.world"/>
-		<arg name="paused" value="false"/>
-		<arg name="use_sim_time" value="true"/>
+	<!-- ******************************************************************************************************************* -->
+	
+	<!-- ARGUMENTS -->
+	
+	<arg name="navigation" default="false"/>         <!-- Set to true to run autonomous navigation algorithms -->
+	<arg name="teleoperation" default="false"/>		 <!-- Set to true to run teleoperation -->
+	<arg name="world" default="empty_world"/>		 <!-- Gazebo world to be loaded -->
+	
+	<!-- ******************************************************************************************************************* -->
+	
+	
+	<!-- Gazebo -->
+	<include file="$(find wheelchair_gazebo)/launch/wheelchair_gazebo.launch">
+		<arg name="world" value="$(arg world)" />
 	</include>
 	
-	<!-- Spawn the URDF in gazebo -->
-	<node name="spawner_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model Wheelchair -param robot_description"/>
+	<!-- Control -->
+	<include file="$(find wheelchair_gazebo)/launch/wheelchair_control.launch">
+		<arg name="teleoperation" value="$(arg teleoperation)" />
+	</include>
 	
-	<!-- Start the controllers -->
-	<node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
-		  args="joint_state_controller"/> 
-
-	<!-- Run the robot state publisher -->
-	<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
-		<param name="publish_frequency" type="double" value="50.0" />
-	</node>
-
-		
-	<!-- Include the navigation launcher 
-	<include file="$(find wheelchair_gazebo)/launch/wchair_nav.launch" /> -->
+	<!-- Navigation -->
+	<include file="$(find wheelchair_gazebo)/launch/wheelchair_navigation.launch">
+		<arg name="world" value="$(arg world)" />
+		<arg name="navigation" value="$(arg navigation)" />
+	</include>
 	
-	<!-- Include the visp launcher 
-	<include file="$(find wheelchair_gazebo)/launch/wchair_visp.launch" /> -->
+	<node pkg="rqt_robot_steering" type="rqt_robot_steering" name="rqt_robot_steering"/> 
 	
-	<!-- Run RViz -->
-	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find wheelchair_description)/config/wheelchair_base.rviz"/> 
 	
-	<!-- Run teleop node 
-	<include file="$(find wheelchair_control)/launch/keyboard_teleop.launch"/> -->
+	<!-- <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"/> -->
 	
 </launch>

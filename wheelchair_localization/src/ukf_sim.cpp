@@ -199,12 +199,12 @@ int main(int argc, char **argv){
 			odom_trans.transform.rotation = odom_quat;
 			odom_trans.header.stamp = ros::Time::now();
 			odom_trans.header.frame_id = "odom";
-			odom_trans.child_frame_id = "base_link";
+			odom_trans.child_frame_id = "base_footprint";
 			//questo passaggio è necessario quando vogliamo pubblicare sul topic /odom che vuole informazioni nav_msgs::Odometry
 			nav_msgs::Odometry odom;
 			odom.header.stamp = odom_trans.header.stamp;
 			odom.header.frame_id = "odom";
-			odom.child_frame_id = "base_link";
+			odom.child_frame_id = "base_footprint";
 			odom.pose.pose.position.x = Xa;
 			odom.pose.pose.position.y = Ya;
 			odom.pose.pose.position.z = 0.0;
