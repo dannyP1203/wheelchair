@@ -1,9 +1,6 @@
 <?xml version='1.0'?>
 <launch>
 
-	<arg name="teleoperation" /> 
-	
-	<!-- ******************************************************************************************************************* -->
 
 	<!-- Load ros_control controller configurations -->
 	<rosparam file="$(find wheelchair_control)/config/joint_state_controller.yaml" command="load" />
@@ -11,7 +8,8 @@
 
 	<!-- Start the controllers -->
 	<node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
-		  args="joint_state_controller diff_drive_controller"
+		  args="joint_state_controller 
+				diff_drive_controller"
 	/> 
 
 	<!-- Run the robot state publisher to publish TF -->
@@ -20,7 +18,7 @@
 	</node>
 	
 	<!-- Run Teleoperation -->
-	<include file="$(find wheelchair_control)/launch/keyboard_teleop.launch" if="$(arg teleoperation)" >
+	<include file="$(find wheelchair_control)/launch/keyboard_teleop.launch" >
 		<arg name="command_topic" value="diff_drive_controller/cmd_vel" />
 	</include>
 	

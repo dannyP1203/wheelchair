@@ -1,9 +1,0 @@
-<?xml version='1.0'?>
-<launch>
-	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
-		<rosparam command="load" file="$(find wheelchair_localization)/params/ekf_odom.yaml" />
-		
-		<!-- Remap input odometry topic -->
-		<remap from="odom" to="diff_drive_controller/odom"/>
-	</node>
-</launch>

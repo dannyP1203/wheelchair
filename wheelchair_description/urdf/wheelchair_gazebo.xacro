@@ -220,7 +220,7 @@
 				<updateRateHZ>${imu_rate}</updateRateHZ>
     	  		<bodyName>imu_link</bodyName>
 				<serviceName>imu/calibrate</serviceName>
-    	  		<gaussianNoise>0.0002</gaussianNoise> 
+    	  		<gaussianNoise>0.001</gaussianNoise> 
     	  		<rpyOffset>0 0 0</rpyOffset> 
 				<initialOrientationAsReference>false</initialOrientationAsReference>
     		</plugin>
@@ -286,7 +286,7 @@
 			<alwaysOn>true</alwaysOn>
 			<updateRate>50.0</updateRate>
 			<bodyName>base_footprint</bodyName>
-			<topicName>ground_truth_odom</topicName>
+			<topicName>/odometry/ground_truth_odom</topicName>
 			<gaussianNoise>0.0</gaussianNoise>
 			<frameName>map</frameName>
 			<xyzOffsets>0 0 0</xyzOffsets>
