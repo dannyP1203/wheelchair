@@ -253,7 +253,7 @@
 		  <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
 			<alwaysOn>true</alwaysOn>
 			<updateRate>20.0</updateRate>
-			<cameraName>wchair/camera_sensor</cameraName>
+			<cameraName>camera_sensor</cameraName>
 			<imageTopicName>image_raw</imageTopicName>
 			<cameraInfoTopicName>camera_info</cameraInfoTopicName>
 			<frameName>camera_link</frameName>

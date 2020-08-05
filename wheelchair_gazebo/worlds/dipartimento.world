@@ -473,6 +473,11 @@
       </visual>
       <pose frame=''>-10.55 15.175 0 0 -0 3.14159</pose>
     </link>
+	
+	<include>
+      <uri>model://qr_code_dipartimento</uri>
+      <pose>0 0 3 0 0 0</pose>
+    </include>
     <static>1</static>
   </model>
  </world>

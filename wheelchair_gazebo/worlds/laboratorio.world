@@ -8,17 +8,6 @@
       <uri>model://sun</uri>
     </include>
 	   
-	<!--<include>
-      <uri>model://construction_cone</uri>
-      <name>construction_cone</name>
-      <pose>1.5 1.0 0 0 0 0</pose>
-    </include>
-    <include>
-      <uri>model://construction_cone</uri>
-      <name>construction_cone</name>
-      <pose>3.0 0 0 0 0 0</pose>
-    </include>-->
-
   <model name='Lab'>
     <pose frame=''>0 0 0 0 0 0</pose>
     
@@ -143,7 +132,7 @@
     </link>
     
     <include>
-      <uri>model://qr_code</uri>
+      <uri>model://qr_code_laboratorio</uri>
       <pose>0 0 3 0 0 0</pose>
     </include>
     <static>1</static>

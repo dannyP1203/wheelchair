@@ -1,0 +1,64 @@
+<?xml version='1.0'?>
+<launch>
+
+	<arg name="navigation" /> 
+	<arg name="fusion" /> 
+	<arg name="qr" /> 
+	
+	<!-- ******************************************************************************************************************* -->
+	
+	
+	<!-- Local EKF -->
+	<!-- If fusion is set to false, the Ground Truth Broadcaster will broadcast odom -> base_footprint -->
+	<include file="$(find wheelchair_navigation)/launch/ekf_local.launch">
+		<arg name="fusion" value="$(arg fusion)" />
+		<arg name="output_topic" value="/odometry/ekf_local" />
+	</include>
+	
+	<node pkg="wheelchair_navigation" type="ground_truth_transform_broadcaster.py" name="ground_truth_transform_broadcaster" output="screen" unless="$(arg fusion)">
+		<remap from="/ground_truth_odom" to="/odometry/ground_truth_odom" />
+	</node>
+	
+	
+	<!-- Global EKF -->
+	<!-- If any global localizer isn't running (AMCL, QR localizer), or fusion is set to false, static trasform publisher will broadcast map -> odom  -->
+	<include file="$(find wheelchair_navigation)/launch/ekf_global.launch" >
+		<arg name="qr" value="$(arg qr)" />
+		<arg name="navigation" value="$(arg navigation)" />
+		<arg name="fusion" value="$(arg fusion)" />
+		<arg name="output_topic" value="/odometry/ekf_global" />
+	</include>
+		
+	
+	<!-- QR localization nodes -->
+	<group if="$(arg qr)" >
+	
+		<!--Visp Auto Tracker -->
+		<node pkg="visp_auto_tracker" type="visp_auto_tracker" name="visp_auto_tracker">
+			<param name="model_path" type="string" value="$(find wheelchair_camera)/models/QRcode_pattern" />
+			<param name="model_name" type="string" value="pattern" />
+			<param name="debug_display" type="bool" value="false" />
+			<param name="tracker_ref_frame" value="/camera_link" />
+			
+			<remap from="/visp_auto_tracker/camera_info" to="/camera_sensor/camera_info"/>
+			<remap from="/visp_auto_tracker/image_raw" to="/camera_sensor/image_raw"/>
+		</node>
+			
+		<!-- QR Reader -->
+		<node pkg="wheelchair_navigation" type="qr_reader.py" name="qr_reader" output="screen">
+			<param name="mode" value="qr" />
+			
+			<!-- Remap input topics  -->
+			<!-- <remap from="/visp_auto_tracker/object_position_covariance" to="" /> -->
+			<!-- <remap from="/visp_auto_tracker/code_message" to="" /> -->
+			<!-- <remap from="/odometry/ekf_odom" to="" /> -->
+			<!-- <remap from="/odometry/ground_truth_odom" to="" /> -->
+			<!-- <remap from="/imu/data" to="" /> -->
+			
+			<!-- Remap output topics  -->
+			<!-- <remap from="/qr_pose" to="" /> -->
+		</node>
+		
+	</group>
+	
+</launch>

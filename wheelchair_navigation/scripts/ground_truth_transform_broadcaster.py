@@ -11,7 +11,7 @@ from geometry_msgs.msg import TransformStamped
 
 class Odom_Broadcaster:
     def __init__(self):
-        self.odom_sub = rospy.Subscriber("/odometry/ground_truth_odom", Odometry, self.odom_callback)
+        self.odom_sub = rospy.Subscriber("ground_truth_odom", Odometry, self.odom_callback)
         self.odom_broadcaster = tf2_ros.TransformBroadcaster()
         
         self._pose = 0
@@ -46,5 +46,4 @@ if __name__=="__main__":
     rospy.init_node('ground_truth_transform_broadcaster')
     Odom_Broadcaster()
     
-    while not rospy.is_shutdown():
-        rospy.spin()
+    rospy.spin()

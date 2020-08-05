@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<launch>
+
+	<arg name="world" default="empty_world"/> 
+	
+	<!-- ******************************************************************************************************************* -->
+
+	<param name="/map_server/frame_id" value="map"/>
+	
+	<node pkg="wheelchair_navigation" type="map_server_launch.py" name="ms_launcher" output="screen" >
+		<param name="world_name" value="$(arg world)"/>
+	</node>
+	
+</launch>

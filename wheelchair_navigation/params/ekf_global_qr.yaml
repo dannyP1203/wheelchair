@@ -1,0 +1,110 @@
+#      General Settings
+
+frequency: 10
+sensor_timeout: 0.05
+two_d_mode: true
+transform_time_offset: 0.0
+transform_timeout: 1.0
+print_diagnostics: false
+debug: false
+#publish_tf: true                   # Lo setto dinamicamente dal launch file
+publish_acceleration: false
+dynamic_process_noise_covariance: true
+
+#      Frame
+odom_frame: odom
+base_link_frame: base_footprint
+world_frame: map
+
+
+#      Covarianze
+
+# NB: La process_noise_covariance matrix è la matrice Q nell'equazione di predizione del KF. Generalmente nelle formulazioni del KF è costante, ma in questa implementazione viene moltiplicata per delta_t,
+# per cui indica quanto rumore accumulo ogni secondo! Va tarata in modo che la covarianza della posizione non cresca troppo rapidamente (vanno aggiustate le covarianze di posizione e velocità), sopratutto quando il robot è fermo.
+
+process_noise_covariance: [0.05, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0.05, 0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0.06, 0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0.03, 0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0.03, 0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0.06, 0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0.025, 0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0.025, 0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0.04, 0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0.01, 0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0.01, 0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0.02, 0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0.01, 0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0.01, 0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0.015] 
+
+initial_estimate_covariance: [1e-9, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    1e-9, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    1e-9, 0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    1e-9, 0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    1, 0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    1, 0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    1, 0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    1e-9, 0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    1e-9,  0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     1e-9,  0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     1,  0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1, 0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]
+#
+
+##############################################################################
+
+#      Odometry
+
+odom0: /diff_drive_controller/odom
+
+odom0_config: [false, false, false,
+               false, false, false,
+               true, true, false,
+               false, false, false,
+               false, false, false]               
+
+# odom0_queue_size: 10
+odom0_differential: false
+odom0_relative: false
+
+
+##############################################################################
+
+#      Imu
+
+imu0: /imu/data
+
+imu0_config: [false, false, false,
+              false, false, true,
+              false, false, false,
+              false, false, true,
+              true, false, false]
+              
+imu0_nodelay: false
+imu0_differential: false
+imu0_relative: true
+# imu0_queue_size: 10
+# imu0_pose_rejection_threshold: 0.8
+# imu0_twist_rejection_threshold: 0.8
+# imu0_linear_acceleration_rejection_threshold: 0.8
+imu0_remove_gravitational_acceleration: true
+
+
+##############################################################################
+
+#      QR Localizer
+
+pose0: /qr_pose
+
+pose0_config: [true, true, false,
+               false, false, true,
+               false, false, false,
+               false, false, false,
+               false, false, false]
+pose0_differential: false
+pose0_relative: false
+

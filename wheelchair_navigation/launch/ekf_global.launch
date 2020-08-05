@@ -1,0 +1,51 @@
+<?xml version='1.0'?>
+<launch>
+	
+	<arg name="qr" />
+	<arg name="navigation" />
+	<arg name="fusion" />
+	<arg name="output_topic" default="odometry/filtered" />
+	
+	<!-- ******************************************************************************************************************* -->
+	
+	<!-- Global EKF -->
+
+	<group if="$(arg navigation)" >
+		<!-- AMCL Only -->
+		<node pkg="robot_localization" type="ekf_localization_node" name="ekf_global" clear_params="true" unless="$(arg qr)">
+			<rosparam command="load" file="$(find wheelchair_navigation)/params/ekf_global_amcl.yaml" />
+			<param name="publish_tf" value="$(arg fusion)"/>
+			
+			<!--  Placeholder for output topic remapping -->
+			<remap from="odometry/filtered" to="$(arg output_topic)"/>
+		</node>
+		
+		<!-- QR and AMCL -->
+		<node pkg="robot_localization" type="ekf_localization_node" name="ekf_global" clear_params="true" if="$(arg qr)">
+			<rosparam command="load" file="$(find wheelchair_navigation)/params/ekf_global_amcl_qr.yaml" />
+			<param name="publish_tf" value="$(arg fusion)"/>
+			
+			<!--  Placeholder for output topic remapping -->
+			<remap from="odometry/filtered" to="$(arg output_topic)"/>
+		</node>
+	</group>
+	
+	
+	<group unless="$(arg navigation)" >
+		<!-- QR Only -->
+		<node pkg="robot_localization" type="ekf_localization_node" name="ekf_global" clear_params="true" if="$(arg qr)">
+			<rosparam command="load" file="$(find wheelchair_navigation)/params/ekf_global_qr.yaml" />
+			<param name="publish_tf" value="$(arg fusion)"/>
+			
+			<!--  Placeholder for output topic remapping -->
+			<remap from="odometry/filtered" to="$(arg output_topic)"/>
+		</node>
+		
+		<!-- Static Transform Publisher (neither AMCL nor QR localizator is running, or fusion is set to false) -->
+		<node pkg="tf" type="static_transform_publisher" name="static_map_to_odom_publisher" args="0 0 0 0 0 0 /map /odom 100" unless="$(eval arg('qr') and arg('fusion'))"/>
+	</group>
+	
+</launch>
+
+		
+

@@ -1,0 +1,11 @@
+-) Per generare un qr code utilizzare il portale: https://www.the-qrcode-generator.com/
+	Dimensioni: 	722x722 px con bordo
+	Testo: 			#x#y#z#room
+	
+-) Modificare qr_template.svg con il qr_code appena creato per ottenere un file png delle dimensioni opportune:
+	Parameteri: (Concentrici)
+		Riquadro Esterno: 1122x1122 (nero)
+		Riquadro Interno: 822x822   (bianco)
+		QR_code	Interno:  722x722
+		
+	Per far ciò, usare il portale https://editor.method.ac/, caricare qr_template.svg, importare il qr_code.png creato al punto 1, posizionarlo alle coordinate 200/200.
