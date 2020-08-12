@@ -1,0 +1,5 @@
+1. Lanciamo il file calib_cam_camcal.launch che esegue il nodo cameracalibrator che equivale al comando: "rosrun camera_calibration cameracalibrator.py --size 8x5 --square 0.08 image:=/camera/image_raw camera:=/camera --no-service-check" 
+2. Seguire le istruzioni su wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration
+
+N.B. per calibrare la webcam usiamo una scacchiera stampata su un pannello di dimensioni 0.845 x 0.595 metri con 9x6 quadrati di lato 0.08 metri
+

@@ -1,0 +1,17 @@
+<?xml version='1.0'?>
+<launch>	
+  <!-- Launch the usb camera acquisition node -->
+  <node pkg="usb_cam" type="usb_cam_node" name="usb_cam" output="screen">      
+    <param name="image_width" type="int" value="640" />
+    <param name="image_height" type="int" value="480" />
+    <param name="video_device" type="string" value="/dev/video1" />      
+    <param name="pixel_format" type="string" value="yuyv" />
+
+    <remap from="/usb_cam/image_raw" to="/camera/image_raw"/>
+    <remap from="/usb_cam/image_info" to="/camera/camera_info"/>
+  </node>
+  <!-- Lancia il nodo per effettuare la calibrazione con la scacchiera del laboratorio che ha 8x5 punti interni e i quadrati di 80 mm-->
+  <node pkg="camera_calibration" type="cameracalibrator.py" name="cameracalibrator" args="--size 8x5 --square 0.08 image:=/camera/image_raw camera:=/camera --no-service-check"/>
+</launch>
+
+   

@@ -2,11 +2,15 @@
 <launch>
 	
 	<arg name="world" /> 
+	<arg name="use_pid" /> 
 	
 	<!-- ******************************************************************************************************************* -->
 	
 	<!-- Load the URDF Model -->
 	<include file="$(find wheelchair_description)/launch/wheelchair_upload.launch" />
+	
+	<!-- Load gazebo_ros_control PID gains -->
+	<rosparam file="$(find wheelchair_control)/config/gazebo_ros_control_controller.yaml" command="load" if="$(arg use_pid)"/>
 	
 	<!-- Resume the logic in empty_world.launch -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">

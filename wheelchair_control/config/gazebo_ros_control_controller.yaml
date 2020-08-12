@@ -1,0 +1,22 @@
+# These PID gains are used by gazebo ros control within the DefaultRobotHWSim hardware interface.
+# Load this parameters is optional:
+#    -) without: the wheel velocity setpoint from the diff drive controller will be forwarded to the corresponding joint in gazebo;
+#    -) with: the wheel velocity setpoint from the diff drive controller is passed to a pid loop, and the computed torque command will drive the joint in gazebo.
+
+gazebo_ros_control:
+  pid_gains:
+    left_wheel_joint:
+      p: 1000.0
+      i: 50.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    
+    right_wheel_joint:
+      p: 1000.0
+      i: 50.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true

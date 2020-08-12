@@ -1,0 +1,66 @@
+<?xml version='1.0'?>
+
+<!-- TODO: -->
+<!-- Scrivere una classe che implementi l'interfaccia hw (simil ros_control), quindi delle funzioni read() e write() utilizzabili dalla logica di controllo (automatic). Dall'interfaccia si inviano ad harduino i comandi digitali e si ricevono i dati dai sensori (encoder). -->
+<!-- impostare i filtri di kalman per la localizzazione come in simulazione -->
+<!-- sistemare la localizzazione qr come in simulazione -->
+
+
+
+
+<launch>
+	<node pkg="rosserial_python" type="serial_node.py" name="rosserial_lipo" output="screen">
+		<param name="~port" value="/dev/Arduino" />
+		<param name="~baud" value="57600" />
+	</node>
+  
+	<node pkg="microstrain_3dmgx2_imu" type="imu_node" name="imu_node" output="screen" >
+		<param name="port" value="/dev/MicroStrain" />
+	</node>
+
+	<node pkg="hokuyo_node" type="hokuyo_node" name="hokuyo" respawn="false" output="screen" >
+		<!--Starts up faster, but timestamps will be inaccurate. --> 
+		<param name="calibrate_time" type="bool" value="false"/> 
+		<!-- Set the port to connect to here -->
+		<param name="port" type="string" value="/dev/Hokuyo"/> 
+	</node>
+	
+	<!-- NB: Va usato o uno static broadcaster o direttamente robot state publisher se l'urdf e corretto -->
+    <node pkg="wheelchair_bringup" type="robot_setup_tf" name="robot_setup_tf" output="screen" />
+
+	<node pkg="rviz" type="rviz" name="rviz" output="screen" args="-d $(find wheelchair_bringup)/config/wheelchair.rviz"/>
+  
+	<!--<node pkg="localization" type="ukf_qr_real" name="ukf_qr_real" output="screen"/>-->
+  
+  	<!-- gmapping da lanciare solo quando si vuole creare una nuova mappa -->
+	<!--<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+		<param name="use_sim_time" value="true"/>
+	</node> -->
+
+	<!-- map_server da lanciare solo quando si vuole caricare una mappa -->
+	<node pkg="map_server" type="map_server" name="map_server" args="$(find mappe)/dipartimento/dipartimento.yaml" >
+		<param name="frame_id" value="/map"/>
+	</node>
+	
+	
+	<node pkg="wheelchair_bringup" type="comando" name="comando" output="screen"/>
+
+    <node pkg="wheelchair_bringup" type="automatic" name="automatic" output="screen"/>
+	
+	<node pkg="wheelchair_bringup" type="goal_setting" name="goal_setting" output="screen"/>
+	
+	<!-- NB: usare la configurazione di amcl che si usa in sumulazione -->
+	<include file="$(find amcl)/examples/amcl_diff.launch" />
+	
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find costmap)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find costmap)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find costmap)/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find costmap)/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find costmap)/base_local_planner_params.yaml" command="load" />
+	</node> 
+	
+	<include file="$(find wheelchair_bringup)/launch/webcam.launch" />
+</launch>
+
+

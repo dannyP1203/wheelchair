@@ -8,7 +8,9 @@
 	<arg name="fusion" 		default="true"/>          <!-- Enable/Disable local and global EKF tf broadcasting (odom->base_footprint and map->odom, respectively) -->
 	<arg name="navigation" 	default="false"/>         <!-- Set to true to run autonomous navigation algorithms (Map server, AMCL, Nav Stack) -->
 	<arg name="qr" 			default="false"/>		  <!-- Set to true to run QR global localization -->
+	
 	<arg name="world" 		default="empty_world"/>	  <!-- Gazebo world to be loaded -->
+	<arg name="use_pid"		default="true"/>		  <!-- Set to true to use the gazebo ros control pid loop (otherwise the velocity setopint will be forwarded to the joint -->
 	
 	<!-- ******************************************************************************************************************* -->
 	
@@ -16,6 +18,7 @@
 	<!-- Gazebo -->
 	<include file="$(find wheelchair_gazebo)/launch/wheelchair_gazebo.launch">
 		<arg name="world" value="$(arg world)" />
+		<arg name="use_pid" value="$(arg use_pid)" />
 	</include>
 	
 	<!-- Control -->
