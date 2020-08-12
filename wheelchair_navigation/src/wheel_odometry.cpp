@@ -1,7 +1,13 @@
 //
-// Calcola l'odometria dagli encoder delle ruote.   DA SISTEMARE!!
+// Compute odometry based on wheel encoders.
+// Wheel positions are read from /joint_states topic.
+// Odometry is published on the /odometry/wheel_odom topic.
 //
+// Class mandatory params:
+//	-) wheel radius [m]
+//	-) wheels separation [m]
 //
+// Reference: Siciliano, Advanced textbook in control and signal processing
 
 
 #include <ros/ros.h>
@@ -9,115 +15,154 @@
 #include <sensor_msgs/JointState.h>
 #include <nav_msgs/Odometry.h>
 
+namespace wheelchair {
+	class Odometry;
+}
 
-
-using namespace std;
-
-
-class Wheel_Odometry {
+class wheelchair::Odometry {
 
     private:
 		
-		const float Cm = 0.2;									// raggio della ruota
-		const float b = 0.5;										// interasse tra le ruote
-		const float Cm_E = 0.0120301;							// massimo errore a velocità costante
+		const float radius;						// Wheel radius
+		const float separation;					// Wheel separation
 		
-		float odom_D=0;		//Spostamento incrementale della ruota DX dalla Callback
-		float odom_S=0;		//Spostamento incrementale della ruota SX dalla Callback
-		float msg_D_old=0;	//Memorizza la distanza già percorsa della ruota DX
-		float msg_S_old=0;	//Memorizza la distanza già percorsa della ruota SX
-		float deltaD=0;		//Spostamento incrementale della ruota DX
-		float deltaS=0;		//Spostamento incrementale della ruota SX
-		float deltaC=0;		//Spostamento incrementale del centro dell'interasse	
-		float thetaZ=0;		//Variazione incrementale dell'angolo
-		//variabili	per i valori totali delle distanza e degli angoli
-		float distD=0;		//Distanza totale percorsa dalla ruota DX
-		float distS=0;		//Distanza totale percorsa dalla ruota SX
-		float distanza=0;	//Distanza totale percorsa dal veicolo
-		float theta_tot=0;	//Angolo di rotazione totale del veicolo
-		//variabili per le posizioni
-		float X=0;			//Andamento lungo l'asse X
-		float Y=0;			//Andamento lungo l'asse Y
-		float dX=0;			//Incremento lungo l'asse X
-		float dY=0;			//Incremento lungo l'asse Y
+		double x;								// Model state, x position [m]
+		double y;								// Model state, y position [m]
+		double theta;							// Model state, yaw angle [rad]
 		
+		double linear_vel;						// Linear velocity [m/s]
+		double angular_vel;						// Angular velocity [rad/s]
+		
+		double left_pos;						// current left wheel position [rad]
+		double right_pos;						// current right wheel position [rad]
+		double left_pos_old;					// previous left wheel position [rad]
+		double right_pos_old;					// previous right wheel position [rad]
+		
+		ros::Time timestamp;					// current timestamp
+		ros::Time timestamp_old;				// previous timestamp
+	
 		ros::NodeHandle nh;
 		ros::Publisher pub;
 		ros::Subscriber sub;
 
     public:
 	
-		Wheel_Odometry () {
-
-			pub = nh.advertise<nav_msgs::Odometry>("/odometry/wheel_odom", 10);    
-			sub = nh.subscribe("/joint_states", 10, &Wheel_Odometry::js_callback, this);
-		}
-
-		void js_callback (const sensor_msgs::JointState& msg) {
+		Odometry (float r, float sep): radius(r), separation(sep) {
 			
-			odom_S = (msg.position[0]) * Cm - msg_S_old; 
-			odom_S += (-Cm_E + rand() / (RAND_MAX / (2 * Cm_E))); //aggiungo rumore alla misura, valore casuale compreso tra -Cm_E e +Cm_E
-			msg_S_old = (msg.position[0]) * Cm;
+			x = 0.0;
+			y = 0.0;
+			theta = 0.0;
 			
-			odom_D = (msg.position[1]) * Cm - msg_D_old;
-			odom_D += (-Cm_E + rand() / (RAND_MAX / (2 * Cm_E))); //aggiungo rumore alla misura, valore casuale compreso tra -Cm_E e +Cm_E
-			msg_D_old = (msg.position[1]) * Cm;
+			linear_vel = 0.0;
+			angular_vel = 0.0;
+			
+			left_pos = 0.0;
+			right_pos = 0.0;
+			left_pos_old = 0.0;
+			right_pos_old = 0.0;
+
+			timestamp = ros::Time::now();
+			timestamp_old = timestamp;
+			
+			pub = nh.advertise <nav_msgs::Odometry> ("/odometry/wheel_odom", 10);    
+			sub = nh.subscribe ("/joint_states", 10, &Odometry::js_callback, this);
 		}
 		
-		void get_odometry () {
+		bool update () {
 			
-			deltaD = odom_D;
-			distD = distD + deltaD;
-			deltaS = odom_S;		
-			distS = distS + deltaS;			
-			deltaC = (deltaD + deltaS) / 2;	
-			distanza = distanza + deltaC;
-			//Calcolo angolo (incrementale e totale)
-			thetaZ = (deltaD - deltaS) / (2 * b);	
-			theta_tot = (distD - distS) / (2 * b);	
+			// Update position
+			const double delta_r = radius * (right_pos - right_pos_old);
+			const double delta_l = radius * (left_pos - left_pos_old);
 			
-			dX = deltaC * cos(theta_tot);	//proiezione dello spostamento incrementale della C lungo X
-			dY = deltaC * sin(theta_tot);	//proiezione dello spostamento incrementale della C lungo Y
-			X = X + dX;
-			Y = Y + dY;
+			right_pos_old = right_pos;
+			left_pos_old = left_pos;
+			
+			const double delta_S = (delta_r + delta_l) * 0.5;
+			const double delta_theta = (delta_r - delta_l) / separation;
+			
+			integrate (delta_S, delta_theta);
+			
+			
+			// Update velocity
+			timestamp = ros::Time::now();
+			const double dt = (timestamp - timestamp_old).toSec();
+			timestamp_old = timestamp;
+			
+			//Todo: use a moving filter to smooth the velocities
+			linear_vel  = delta_S     / dt;
+			angular_vel = delta_theta / dt;
+			
+			return true;
 		}
 		
-		void publish_odometry () {
+		void publish () {
 			
-			geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(theta_tot);
+			geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(theta);
 
 			nav_msgs::Odometry odom;
-			odom.header.stamp = ros::Time::now();
+			odom.header.stamp    = timestamp;
 			odom.header.frame_id = "odom";
-			odom.child_frame_id = "base_footprint";
+			odom.child_frame_id  = "base_footprint";
 
-			odom.pose.pose.position.x = X;
-			odom.pose.pose.position.y = Y;
-			odom.pose.pose.position.z = 0.0;
+			odom.pose.pose.position.x  = x;
+			odom.pose.pose.position.y  = y;
+			odom.pose.pose.position.z  = 0.0;
 			odom.pose.pose.orientation = odom_quat;
 
 			
-			odom.twist.twist.linear.x = 0;
-			odom.twist.twist.linear.y = 0;
-			odom.twist.twist.angular.z = 0;
+			odom.twist.twist.linear.x  = linear_vel;
+			odom.twist.twist.angular.z = angular_vel;
 			
 			pub.publish (odom);
 		}
 
+	private:
+	
+		void js_callback (const sensor_msgs::JointState& msg) {
+			
+			left_pos = msg.position[0];
+			right_pos = msg.position[1];	
+		}
+
+		void integrate (double linear, double angular) {
+			
+			if (fabs(angular) < 1e-6) {			
+				// Runge Kutta 
+				const double direction = theta + angular * 0.5;
+				
+				x 	  += linear * cos(direction);
+				y 	  += linear * sin(direction);
+				theta += angular;
+			}
+			else {			
+				// Exact Integration (singular in w=0)
+				const double theta_old = theta;
+				const double r = linear / angular;
+				
+				theta += angular;
+				x 	  +=  r * (sin(theta) - sin(theta_old));
+				y 	  += -r * (cos(theta) - cos(theta_old));
+			}
+		}
 };
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using namespace wheelchair;
 
 int main (int argc, char **argv)
 {
     ros::init(argc, argv, "wheel_odometry");
-    ros::NodeHandle nh;
-    Wheel_Odometry obj = Wheel_Odometry();
+	
+	// Class parameters: (wheel radius [m], wheels separation [m])
+    Odometry obj = Odometry(0.2, 0.6);
 	
 	ros::Rate loop_rate(10);
 
 	while (ros::ok()) {
 		
-		obj.get_odometry();
-		obj.publish_odometry();
+		if (obj.update()) {obj.publish();};
 		
 		ros::spinOnce();
 		loop_rate.sleep();
