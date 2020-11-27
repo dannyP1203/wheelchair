@@ -408,7 +408,7 @@ Visualization Manager:
         Value: false
       Enabled: true
       Keep: 10
-      Name: Odometry (Encoder)
+      Name: Odometry - Encoder (Red)
       Position Tolerance: 0.100000001
       Shape:
         Alpha: 1
@@ -442,7 +442,7 @@ Visualization Manager:
         Value: false
       Enabled: true
       Keep: 10
-      Name: Odometry (Ground Truth)
+      Name: Odometry - Ground Truth (Blue)
       Position Tolerance: 0.100000001
       Shape:
         Alpha: 1
@@ -476,7 +476,7 @@ Visualization Manager:
         Value: false
       Enabled: true
       Keep: 10
-      Name: Odometry (Local EKF)
+      Name: Odometry - Local EKF (Green)
       Position Tolerance: 0.100000001
       Shape:
         Alpha: 1
@@ -514,7 +514,7 @@ Visualization Manager:
       Enabled: true
       Head Length: 0.300000012
       Head Radius: 0.100000001
-      Name: AMCL Pose 
+      Name: AMCL Pose
       Shaft Length: 1
       Shaft Radius: 0.0500000007
       Shape: Arrow
@@ -536,7 +536,7 @@ Visualization Manager:
       Shape: Arrow (Flat)
       Topic: /particlecloud
       Unreliable: false
-      Value: false	   
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -594,7 +594,7 @@ Visualization Manager:
         StaticMap (Map): true
         TF: true
         Value: true
-      Zoom Factor: 1	  
+      Zoom Factor: 1
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48

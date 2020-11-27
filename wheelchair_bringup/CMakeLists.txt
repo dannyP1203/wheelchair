@@ -1,18 +1,19 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(wheelchair_bringup)
 
-find_package(catkin REQUIRED COMPONENTS 
-	roscpp 
-	rospy 
-	std_msgs
-	nav_msgs
-	tf
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  tf
+  tf2_ros
+  std_msgs
 )
+
 
 catkin_package()
 
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(${catkin_INCLUDE_DIRS})
 
 add_executable(automatic src/automatic.cpp)
 target_link_libraries(automatic ${catkin_LIBRARIES})
