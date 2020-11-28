@@ -1,0 +1,10 @@
+<library path="lib/libwheelchair_gazebo_interface">
+
+	<class name="wheelchair_gazebo_interface/WheelchairHardwareSim" type="wheelchair_gazebo_interface::WheelchairHardwareSim"
+		   base_class_type="gazebo_ros_control::RobotHWSim">
+	  <description>
+		This class represents the wheelchair hardware in Gazebo for the gazebo_ros_control plugin.
+	  </description>
+	</class>
+
+</library>

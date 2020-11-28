@@ -1,0 +1,7 @@
+<?xml version='1.0'?>
+<launch>
+	<arg name="version" default="1.0" />
+	
+	<param name="robot_description" 
+		   command="$(find xacro)/xacro --inorder $(find wheelchair_description)/urdf/wheelchair.xacro"/>
+</launch>

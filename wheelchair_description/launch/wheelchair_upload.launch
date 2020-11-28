@@ -1,7 +1,11 @@
 <?xml version='1.0'?>
 <launch>
 	<arg name="version" default="1.0" />
-	
-	<param name="robot_description" 
-		   command="$(find xacro)/xacro --inorder $(find wheelchair_description)/urdf/wheelchair.xacro"/>
+	<arg name="custom_hw_interface" />
+	<arg name="custom_controller" />
+
+	<param name="robot_description"
+		   command="$(find xacro)/xacro --inorder $(find wheelchair_description)/urdf/wheelchair.xacro
+					use_sample_interface:=$(arg custom_hw_interface)
+					use_effort:=$(arg custom_controller)"/>
 </launch>

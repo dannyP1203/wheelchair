@@ -1,0 +1,8 @@
+effort_sample_controller:
+  type        : "wheelchair_controllers/EffortController"
+  left_wheel  : 'left_wheel_joint'
+  right_wheel : 'right_wheel_joint'
+  pid         : {p: 100.0, i: 0.01, d: 10.0}
+  
+  
+ 

@@ -1,81 +1,70 @@
 <?xml version="1.0"?>
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-
+	
 	<!-- ARG FROM LAUNCH FILE -->
-
-	<xacro:arg name="use_sample_interface" default="false" />
-	<xacro:arg name="use_effort" default="false" />
-
-
-
-
-	<!-- ******************************************************************************************************************************** -->
-
+	
+	
+	<!-- <xacro:arg name="localization" default="" /> <~~! True: odom from custom algorithm. False: odom from gazebo diff drive.~~>
+	
+	<xacro:if value="$(arg localization)">
+		<xacro:property name="with_odom" value="false" /> <~~! Odom from custom algorithm. ~~>
+	</xacro:if>
+	<xacro:unless value="$(arg localization)">
+		<xacro:property name="with_odom" value="true" /> <~~! Odom from gazebo diff drive. ~~>
+	</xacro:unless>
+	 -->
+	
+	
+	
 	<!-- PROPERTY LIST -->
-
+	
 	<!-- Base -->
 	<xacro:property name="base_x" value="0.75" />
 	<xacro:property name="base_y" value="0.5" />
 	<xacro:property name="base_z" value="0.15" />
 	<xacro:property name="base_mass" value="100.0"/>
 	<xacro:property name="inertia_correcting_factor" value="20"/> <!-- aumenta l'inertia della base per ridurre il bug dello scivolamento, 1: no correction -->
-
+	
 	<!-- Wheels -->
-	<xacro:property name="wheel_radius" value="0.2" />
+	<xacro:property name="wheel_radius" value="0.2" /> 
 	<xacro:property name="wheel_height" value="0.1" />
-	<xacro:property name="wheel_mass" value="5" />
-
+	<xacro:property name="wheel_mass" value="5" /> 
+	
 	<!-- Caster -->
 	<xacro:property name="castor_mount_link_length" value="0.1" />
 	<xacro:property name="castor_mount_link_width" value="0.1" />
 	<xacro:property name="castor_mount_link_height" value="0.01" />
 	<xacro:property name="castor_mount_link_mass" value="0.25"/>
-
+	
 	<xacro:property name="castor_dummy_link_length" value="0.02" />
 	<xacro:property name="castor_dummy_link_width" value="0.02" />
 	<xacro:property name="castor_dummy_link_height" value="0.02" />
-	<xacro:property name="castor_dummy_link_mass" value="0.25"/>
-
+	<xacro:property name="castor_dummy_link_mass" value="0.25"/> 
+	
 	<xacro:property name="castor_wheel_length" value="0.1" />
 	<xacro:property name="castor_wheel_radius" value="0.095" />
-	<xacro:property name="castor_wheel_mass" value="2.5"/>
-
+	<xacro:property name="castor_wheel_mass" value="2.5"/> 
+	
 	<xacro:property name="joint_friction" value="0.15" />
-
+	
 	<!-- Material -->
 	<xacro:property name="d_grey" value="0.15"/>
-
+	
 	<!-- Camera -->
-	<xacro:property name="camera_size" value="0.05" />
+	<xacro:property name="camera_size" value="0.05" />	
 	<xacro:property name="camera_rate" value="50.0"/>
-
+	
 	<!-- Hokuyo -->
 	<xacro:property name="hokuyo_size" value="0.05"/>
 	<xacro:property name="hokuyo_rate" value="50.0"/>
-
+	
 	<!-- Imu -->
 	<xacro:property name="imu_size" value="0.05"/>
 	<xacro:property name="imu_rate" value="300"/>
-
+	
 	<!-- Encoder -->
 	<xacro:property name="encoder_rate" value="50.0"/>
-
-
-	
-	<!-- Other -->
-	<xacro:if value="$(arg use_sample_interface)">
-		 <xacro:property name="robot_interface" value="wheelchair_gazebo_interface/WheelchairHardwareSim" />
-	</xacro:if>
-	<xacro:unless value="$(arg use_sample_interface)">
-		 <xacro:property name="robot_interface" value="gazebo_ros_control/DefaultRobotHWSim" /> <!--<~~! . ~~> -->
-	</xacro:unless>
-
-	<xacro:if value="$(arg use_effort)">
-		 <xacro:property name="hw_interface" value="hardware_interface/EffortJointInterface" />
-	</xacro:if>
-	<xacro:unless value="$(arg use_effort)">
-		 <xacro:property name="hw_interface" value="hardware_interface/VelocityJointInterface" />
-	</xacro:unless>
-
+		
 </robot>
+

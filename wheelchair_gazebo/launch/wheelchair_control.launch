@@ -2,24 +2,43 @@
 <launch>
 
 
-	<!-- Load ros_control controller configurations -->
-	<rosparam file="$(find wheelchair_control)/config/joint_state_controller.yaml" command="load" />
-	<rosparam file="$(find wheelchair_control)/config/diff_drive_controller.yaml" command="load" />
+	<arg name="custom_controller" />
 
-	<!-- Start the controllers -->
-	<node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
-		  args="joint_state_controller 
-				diff_drive_controller"
-	/> 
+	<!-- ******************************************************************************************************************* -->
+
+	<group if="$(arg custom_controller)" >
+		<!-- Load ros_control controller configurations -->
+		<rosparam file="$(find wheelchair_sample_controllers)/config/joint_state_controller.yaml" command="load" />
+		<rosparam file="$(find wheelchair_sample_controllers)/config/sample_diff_controller.yaml" command="load" />
+		<rosparam file="$(find wheelchair_sample_controllers)/config/sample_effort_controller.yaml" command="load" />
+
+		<!-- Start the controllers -->
+		<node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
+		  args="joint_state_controller
+						diff_sample_controller
+						effort_sample_controller"
+		/>
+	</group>
+	<group unless="$(arg custom_controller)" >
+		<!-- Load ros_control controller configurations -->
+		<rosparam file="$(find wheelchair_control)/config/joint_state_controller.yaml" command="load" />
+		<rosparam file="$(find wheelchair_control)/config/diff_drive_controller.yaml" command="load" />
+
+		<!-- Start the controllers -->
+		<node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
+			  args="joint_state_controller
+							diff_drive_controller"
+		/>
+	</group>
 
 	<!-- Run the robot state publisher to publish TF -->
 	<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
 		<param name="publish_frequency" type="double" value="50.0" />
 	</node>
-	
+
 	<!-- Run Teleoperation -->
 	<include file="$(find wheelchair_control)/launch/keyboard_teleop.launch" >
 		<arg name="command_topic" value="diff_drive_controller/cmd_vel" />
 	</include>
-	
+
 </launch>

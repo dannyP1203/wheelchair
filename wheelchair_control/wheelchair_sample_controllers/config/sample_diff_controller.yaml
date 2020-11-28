@@ -1,0 +1,2 @@
+diff_sample_controller:
+  type        : "wheelchair_controllers/DiffController"

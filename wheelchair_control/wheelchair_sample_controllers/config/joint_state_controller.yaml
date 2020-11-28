@@ -1,0 +1,26 @@
+# Publish all joint states -----------------------------------
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
+  # Joint states dei giunti delle castor, di tipo continuous ma non attuati. 
+  # Vanno pubblicati per poter calcolare correttamente tutte le TF.
+  extra_joints:
+     - name: left_castor_dummy_joint
+       position: 0.0
+       velocity: 0.0
+       effort: 0.0
+
+     - name: right_castor_dummy_joint
+       position: 0.0
+       velocity: 0.0
+       effort: 0.0
+
+     - name: left_castor_wheel_joint
+       position: 0.0
+       velocity: 0.0
+       effort: 0.0
+
+     - name: right_castor_wheel_joint
+       position: 0.0
+       velocity: 0.0
+       effort: 0.0

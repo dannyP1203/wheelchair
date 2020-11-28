@@ -1,0 +1,19 @@
+<class_libraries>
+  <library path="lib/libwheelchair_sample_controllers">
+
+	<class name="wheelchair_controllers/DiffController" type="wheelchair_controllers::DiffController"
+           base_class_type="controller_interface::ControllerBase">
+      <description>
+        Differential drive controller class.
+      </description>
+    </class>
+
+	<class name="wheelchair_controllers/EffortController" type="wheelchair_controllers::EffortController"
+           base_class_type="controller_interface::ControllerBase">
+      <description>
+        Effort controller class.
+      </description>
+    </class>
+
+  </library>
+</class_libraries>

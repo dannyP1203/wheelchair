@@ -2,43 +2,51 @@
 <launch>
 
 	<!-- ******************************************************************************************************************* -->
-	
+
 	<!-- ARGUMENTS -->
-	
-	<arg name="fusion" 		default="true"/>          <!-- Enable/Disable local and global EKF tf broadcasting (odom->base_footprint and map->odom, respectively) -->
-	<arg name="navigation" 	default="false"/>         <!-- Set to true to run autonomous navigation algorithms (Map server, AMCL, Nav Stack) -->
-	<arg name="qr" 			default="false"/>		  <!-- Set to true to run QR global localization -->
-	
-	<arg name="world" 		default="empty_world"/>	  <!-- Gazebo world to be loaded -->
-	<arg name="use_pid"		default="true"/>		  <!-- Set to true to use the gazebo ros control pid loop (otherwise the velocity setopint will be forwarded to the joint -->
-	
+
+	<arg name="fusion" 							default="true"/>          <!-- Enable/Disable local and global EKF tf broadcasting (odom->base_footprint and map->odom, respectively) -->
+	<arg name="navigation" 					default="false"/>         <!-- Set to true to run autonomous navigation algorithms (Map server, AMCL, Nav Stack) -->
+	<arg name="qr" 									default="false"/>		  		<!-- Set to true to run QR global localization -->
+	<arg name="world" 							default="empty"/>	  			<!-- Gazebo world to be loaded -->
+
+	<arg name="use_pid"							default="true"/>		  		<!-- Set to true to use the gazebo ros control pid loop (otherwise the velocity setpoint will be forwarded to the joint -->
+
+	<arg name="custom_hw_interface" default="false" />				<!-- Set to true to use the sample gazebo_ros_control hardware interface in the wheelchair_gazebo_interface package (instead the DefaultRobotHWSim)-->
+	<arg name="custom_controller" 	default="false" />				<!-- Set to true to use the sample diff-effort control loop in the wheelchair_sample_controllers package (instead the standard ros_control Diff Drive) -->
+
+
 	<!-- ******************************************************************************************************************* -->
-	
-		
+
+
 	<!-- Gazebo -->
 	<include file="$(find wheelchair_gazebo)/launch/wheelchair_gazebo.launch">
 		<arg name="world" value="$(arg world)" />
 		<arg name="use_pid" value="$(arg use_pid)" />
+		<arg name="custom_hw_interface" value="$(arg custom_hw_interface)" />
+		<arg name="custom_controller" value="$(arg custom_controller)" />
 	</include>
-	
+
 	<!-- Control -->
-	<include file="$(find wheelchair_gazebo)/launch/wheelchair_control.launch" />
-	
+	<include file="$(find wheelchair_gazebo)/launch/wheelchair_control.launch" >
+		<arg name="custom_controller" value="$(arg custom_controller)" />
+	</include>
+
 	<!-- Localization -->
 	<include file="$(find wheelchair_gazebo)/launch/wheelchair_localization.launch">
 		<arg name="navigation" value="$(arg navigation)" />
 		<arg name="fusion" value="$(arg fusion)" />
 		<arg name="qr" value="$(arg qr)" />
 	</include>
-	
+
 	<!-- Navigation -->
 	<include file="$(find wheelchair_gazebo)/launch/wheelchair_navigation.launch" if="$(arg navigation)" >
 		<arg name="world" value="$(arg world)" />
 		<arg name="fusion" value="$(arg fusion)" />
 	</include>
-	
-	<!-- RViz -->	
+
+	<!-- RViz -->
 	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find wheelchair_description)/config/wheelchair_navigation.rviz" if="$(arg navigation)"/>
 	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find wheelchair_description)/config/wheelchair_base.rviz" unless="$(arg navigation)"/>
-	
+
 </launch>
