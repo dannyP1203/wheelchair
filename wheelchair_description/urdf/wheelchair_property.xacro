@@ -7,9 +7,6 @@
 	<xacro:arg name="use_sample_interface" default="false" />
 	<xacro:arg name="use_effort" default="false" />
 
-
-
-
 	<!-- ******************************************************************************************************************************** -->
 
 	<!-- PROPERTY LIST -->
@@ -62,7 +59,7 @@
 	<xacro:property name="encoder_rate" value="50.0"/>
 
 
-	
+
 	<!-- Other -->
 	<xacro:if value="$(arg use_sample_interface)">
 		 <xacro:property name="robot_interface" value="wheelchair_gazebo_interface/WheelchairHardwareSim" />
